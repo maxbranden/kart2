@@ -22,7 +22,7 @@ Papa.parse(csvUrl, {
 
         results.data.forEach(row => {
 
-            if (!row.Latitude || !row.Longitude) return;
+            if (row.Latitude == null || row.Longitude == null) return;
 
             const marker = L.marker([row.Latitude, row.Longitude]).addTo(map);
 
