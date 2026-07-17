@@ -1,36 +1,37 @@
-const map = L.map('map').setView([60.39, 8.46], 6);
+const map = L.map('map').setView([60.39, 8.46], 5);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Bytt ut med din egen Google Sheet-ID
-const sheet = 'https://opensheet.elk.sh/1HJl3Lr4WTJEo6Iuwf1JituCPDMJJP3LPTDE9WFFFH7s/Ark1';
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOQZlP2tl0K1kY645kZR6fTzZT6jnatg71BXvMVXqKcxpoJ5s0PjGMMFbFKfBh4nteU7s6t7xYb8aA/pub?gid=0&single=true&output=csv";
 
-fetch(sheet)
-    .then(response => response.json())
-    .then(data => {
+Papa.parse(csvUrl, {
+    download: true,
+    header: true,
+    dynamicTyping: true,
+
+    complete: function(results) {
+
         const markers = [];
 
-        data.forEach(row => {
-            const lat = parseFloat(row.Latitude);
-            const lng = parseFloat(row.Longitude);
+        results.data.forEach(row => {
 
-            if (isNaN(lat) || isNaN(lng)) return;
+            if (!row.Latitude || !row.Longitude) return;
 
-            const marker = L.marker([lat, lng])
+            const marker = L.marker([row.Latitude, row.Longitude])
                 .addTo(map)
-                .bindPopup(`
-                    <strong>${row.Navn || ''}</strong><br>
-                    ${row.Beskrivelse || ''}
-                `);
+                .bindPopup(
+                    `<b>${row.Navn}</b><br>${row.Beskrivelse}`
+                );
 
             markers.push(marker);
+
         });
 
         if (markers.length > 0) {
             const group = L.featureGroup(markers);
             map.fitBounds(group.getBounds().pad(0.2));
         }
-    })
-    .catch(error => console.error('Feil ved henting av data:', error));
+    }
+});
