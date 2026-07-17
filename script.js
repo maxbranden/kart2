@@ -5,7 +5,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // Bytt ut med din egen Google Sheet-ID
-const sheet = 'https://opensheet.elk.sh/1HJl3Lr4WTJEo6Iuwf1JituCPDMJJP3LPTDE9WFFFH7s/Sheet1';
+const sheet = 'https://opensheet.elk.sh/1HJl3Lr4WTJEo6Iuwf1JituCPDMJJP3LPTDE9WFFFH7s/Ark1';
 
 fetch(sheet)
     .then(response => response.json())
