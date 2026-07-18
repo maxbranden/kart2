@@ -332,4 +332,4 @@ map.on("overlayadd overlayremove", function () {
 // Ferdig!
 // ===============================
 
-console.log("Kart lastet.");
+console.log("NY SCRIPT 2026");
