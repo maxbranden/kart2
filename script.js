@@ -239,12 +239,15 @@ function createLegend() {
             const item = document.createElement("div");
             item.className = "legend-item";
 
-            item.innerHTML = `
-                <span class="legend-color"
-                      style="background:${color}">
-                </span>
-                <span>${theme}</span>
-            `;
+const colorDot = document.createElement("span");
+colorDot.className = "legend-color";
+colorDot.style.background = color;
+
+const text = document.createElement("span");
+text.textContent = theme;
+
+item.appendChild(colorDot);
+item.appendChild(text);
 
             item.style.cursor = "pointer";
 
