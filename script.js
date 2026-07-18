@@ -104,7 +104,9 @@ Papa.parse(csvUrl, {
 
     complete: function(results) {
 
-        const bounds = [];
+            console.log(results.data);
+
+    const bounds = [];
 
         results.data.forEach(row => {
 
