@@ -111,7 +111,14 @@ Papa.parse(csvUrl, {
         results.data.forEach(row => {
 
             // Hopper over tomme rader
-            if (!row.Latitude || !row.Longitude) return;
+
+            const lat = parseFloat(row.Latitude);
+const lng = parseFloat(row.Longitude);
+
+if (isNaN(lat) || isNaN(lng)) {
+    console.log("Hopper over rad:", row);
+    return;
+}
 
             // ===============================
             // Tema
@@ -137,9 +144,9 @@ Papa.parse(csvUrl, {
             // Marker
             // ===============================
 
-            const marker = L.marker(
 
-                [row.Latitude, row.Longitude],
+                const marker = L.marker(
+    [lat, lng],
 
                 {
                     icon: createIcon(color)
@@ -180,7 +187,8 @@ Papa.parse(csvUrl, {
 
             });
 
-            bounds.push([row.Latitude, row.Longitude]);
+
+            bounds.push([lat, lng]);
 
         });
 
