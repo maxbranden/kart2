@@ -1,33 +1,8 @@
 body{margin:0;font-family:Arial,sans-serif}
-h2{text-align:center;margin:15px}
-#map{height:90vh;width:100%}
-
-body {
-    margin: 0;
-}
-
-#map {
-    height: 100vh;
-    width: 100%;
-}
-
-#controls {
-    position: absolute;
-    top: 10px;
-    left: 60px;
-    z-index: 1000;
-
-    background: white;
-    padding: 6px 8px;
-    border-radius: 6px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.3);
-
-    display: inline-block;
-    width: fit-content;
-}
-
-#controls label {
-    white-space: nowrap;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-}
+#map{height:100vh;width:100%}
+#controls{position:absolute;top:10px;left:60px;z-index:1000;background:#fff;padding:6px 8px;border-radius:6px;box-shadow:0 1px 5px rgba(0,0,0,.3)}
+#controls label{white-space:nowrap;font-size:14px}
+.legend{background:#fff;padding:10px;border-radius:6px;box-shadow:0 1px 5px rgba(0,0,0,.3);font-size:14px;line-height:22px}
+.legend h4{margin:0 0 8px}
+.legend-item{display:flex;align-items:center;margin-bottom:5px}
+.legend-color{width:14px;height:14px;border-radius:50%;margin-right:8px;border:1px solid #555}
