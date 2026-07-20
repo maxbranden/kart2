@@ -17,9 +17,9 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 // Google Sheet
 // ===============================
 
-const csvUrl =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vRbmg8CQbSRL3XQMZ3oKm0oQ9QZfcggIyV6SkHllStu5k1V20Dx2LCjvj14V8I6SNfrDfrnodRvilIp/pub?gid=778833914&single=true&output=csv";
 
+const apiUrl =
+"https://script.google.com/macros/s/AKfycbyWdDE8bhaUhNqKjaHfwWbBIYcVBJF6fxxDTsaFyMY-c9UBe0YFC4Q_EuyusIc6YiMrfw/exec";
 
 // ===============================
 // Datastrukturer
@@ -96,127 +96,111 @@ function createIcon(color) {
 // Les Google Sheet
 // ===============================
 
-Papa.parse(csvUrl, {
+fetch(apiUrl)
+.then(response => response.json())
+.then(data => {
 
-    download: true,
-    header: true,
-    dynamicTyping: true,
-
-    complete: function(results) {
-
-            console.log(results.data);
+    console.log(data);
 
     const bounds = [];
 
-        results.data.forEach(row => {
+    data.forEach(row => {
 
-            // Hopper over tomme rader
+        // Hopper over tomme rader
 
-            const lat = parseFloat(row.Latitude);
-const lng = parseFloat(row.Longitude);
+        const lat = parseFloat(row.Latitude);
+        const lng = parseFloat(row.Longitude);
 
-if (isNaN(lat) || isNaN(lng)) {
-    console.log("Hopper over rad:", row);
-    return;
-}
-
-            // ===============================
-            // Tema
-            // ===============================
-
-            const theme = row.Tema ? row.Tema.trim() : "Annet";
-
-            // Nytt tema får neste ledige farge
-            if (!themeColors[theme]) {
-
-                themeColors[theme] =
-                    colors[colorIndex % colors.length];
-
-                themeLayers[theme] = L.layerGroup().addTo(map);
-
-                colorIndex++;
-
-            }
-
-            const color = themeColors[theme];
-
-            // ===============================
-            // Marker
-            // ===============================
-
-
-                const marker = L.marker(
-    [lat, lng],
-
-                {
-                    icon: createIcon(color)
-                }
-
-            );
-
-            marker.addTo(themeLayers[theme]);
-
-            // ===============================
-            // Popup
-            // ===============================
-
-            marker.bindPopup(`
-
-                <b>${row.Navn}</b><br>
-
-                ${row.Beskrivelse || ""}
-
-                <br><br>
-
-                <small><b>Tema:</b> ${theme}</small>
-
-            `);
-
-            // ===============================
-            // Tooltip
-            // ===============================
-
-            markerList.push({
-
-                marker: marker,
-
-                label:
-                    `<b>${row.Navn}</b><br>${row.Beskrivelse || ""}`,
-
-                layer: themeLayers[theme]
-
-            });
-
-
-            bounds.push([lat, lng]);
-
-        });
-
+        if (isNaN(lat) || isNaN(lng)) {
+            console.log("Hopper over rad:", row);
+            return;
+        }
 
         // ===============================
-        // Zoom kartet
+        // Tema
         // ===============================
 
-        if (bounds.length > 0) {
+        const theme = row.Tema ? row.Tema.trim() : "Annet";
 
-            map.fitBounds(bounds, {
+        if (!themeColors[theme]) {
 
-                padding: [40,40]
+            themeColors[theme] =
+                colors[colorIndex % colors.length];
 
-            });
+            themeLayers[theme] = L.layerGroup().addTo(map);
+
+            colorIndex++;
 
         }
 
+        const color = themeColors[theme];
 
         // ===============================
-        // Lag legend
+        // Marker
         // ===============================
 
-        createLegend();
+        const marker = L.marker([lat, lng], {
+            icon: createIcon(color)
+        });
+
+        marker.addTo(themeLayers[theme]);
+
+        // ===============================
+        // Popup
+        // ===============================
+
+        marker.bindPopup(`
+            <b>${row.Navn}</b><br>
+            ${row.Beskrivelse || ""}
+            <br><br>
+            <small><b>Tema:</b> ${theme}</small>
+        `);
+
+        // ===============================
+        // Tooltip
+        // ===============================
+
+        markerList.push({
+
+            marker: marker,
+
+            label: `<b>${row.Navn}</b><br>${row.Beskrivelse || ""}`,
+
+            layer: themeLayers[theme]
+
+        });
+
+        bounds.push([lat, lng]);
+
+    });
+
+    // ===============================
+    // Zoom kartet
+    // ===============================
+
+    if (bounds.length > 0) {
+
+        map.fitBounds(bounds, {
+
+            padding: [40, 40]
+
+        });
 
     }
 
+    // ===============================
+    // Lag legend
+    // ===============================
+
+    createLegend();
+
+})
+.catch(error => {
+
+    console.error("Kunne ikke hente data:", error);
+
 });
+
 
 // ===============================
 // Legend med filtrering
