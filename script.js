@@ -276,7 +276,7 @@ function updateTimeline(year) {
     });
 
     document.getElementById("timelineYear").textContent =
-        "År: " + year;
+        year;
 
 }
 
