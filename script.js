@@ -234,8 +234,14 @@ if (markerList.length > 1) {
 
     document.getElementById("timelineMin").textContent = minYear;
     document.getElementById("timelineMax").textContent = maxYear;
-    document.getElementById("timelineYear").textContent =
-        "År: " + maxYear;
+
+    updateTimeline(maxYear);
+
+    slider.addEventListener("input", function () {
+
+        updateTimeline(parseInt(this.value));
+
+    });
 
 }
 
@@ -244,6 +250,35 @@ if (markerList.length > 1) {
         // ===============================
     // Lag legend
     // ===============================
+
+    // ===============================
+// Oppdater markører etter år
+// ===============================
+
+function updateTimeline(year) {
+
+    markerList.forEach(item => {
+
+        if (item.year <= year) {
+
+            if (!item.layer.hasLayer(item.marker)) {
+                item.layer.addLayer(item.marker);
+            }
+
+        } else {
+
+            if (item.layer.hasLayer(item.marker)) {
+                item.layer.removeLayer(item.marker);
+            }
+
+        }
+
+    });
+
+    document.getElementById("timelineYear").textContent =
+        "År: " + year;
+
+}
 
     createLegend();
 
