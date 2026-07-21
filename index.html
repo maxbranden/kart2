@@ -14,15 +14,30 @@
 <div id="map"></div>
 
 <div id="timelineContainer" style="display:none;">
-    <div id="timelineLabel"></div>
-    <input type="range" id="timelineSlider">
-</div>
 
-<div id="controls">
-    <label>
-        <input type="checkbox" id="showLabels">
-        Vis beskrivelser
-    </label>
+    <div id="timelineInfo">
+
+        <label>
+            <input type="checkbox" id="showLabels">
+            Vis beskrivelser
+        </label>
+
+        <div id="timelineYear">
+            År: -
+        </div>
+
+    </div>
+
+    <div id="timelineSliderArea">
+
+        <span id="timelineMin"></span>
+
+        <input type="range" id="timelineSlider">
+
+        <span id="timelineMax"></span>
+
+    </div>
+
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
