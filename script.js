@@ -29,6 +29,9 @@ const markerList = [];
 const themeLayers = {};
 const themeColors = {};
 
+let minYear = Infinity;
+let maxYear = -Infinity;
+
 
 // ===============================
 // Opptil 11 temafarger
@@ -111,6 +114,16 @@ fetch(apiUrl)
         const lat = parseFloat(row.Latitude);
         const lng = parseFloat(row.Longitude);
 
+        const year = parseInt(row.Dato);
+
+if (isNaN(year)) {
+    console.log("Mangler gyldig år:", row);
+    return;
+}
+
+minYear = Math.min(minYear, year);
+maxYear = Math.max(maxYear, year);
+
         if (isNaN(lat) || isNaN(lng)) {
             console.log("Hopper over rad:", row);
             return;
@@ -160,15 +173,16 @@ fetch(apiUrl)
         // Tooltip
         // ===============================
 
-        markerList.push({
+markerList.push({
 
-            marker: marker,
+    marker: marker,
+    year: year,
 
-            label: `<b>${row.Navn}</b><br>${row.Beskrivelse || ""}`,
+    label: `<b>${row.Navn}</b><br>${row.Beskrivelse || ""}`,
 
-            layer: themeLayers[theme]
+    layer: themeLayers[theme]
 
-        });
+});
 
         bounds.push([lat, lng]);
 
@@ -192,7 +206,31 @@ if (bounds.length === 1) {
 
 }
 
+
+
     // ===============================
+// Timeline
+// ===============================
+
+if (markerList.length > 1) {
+
+    const container = document.getElementById("timelineContainer");
+    const slider = document.getElementById("timelineSlider");
+
+    container.style.display = "flex";
+
+    slider.min = minYear;
+    slider.max = maxYear;
+    slider.value = maxYear;
+
+    document.getElementById("timelineMin").textContent = minYear;
+    document.getElementById("timelineMax").textContent = maxYear;
+    document.getElementById("timelineYear").textContent =
+        "År: " + maxYear;
+
+}
+
+        // ===============================
     // Lag legend
     // ===============================
 
