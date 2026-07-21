@@ -1,3 +1,4 @@
+
 // Del 1 av script.js kommer i neste melding fordi den er for stor til én chatmelding.
 // Bruk denne index.html og style.css først.
 
@@ -214,7 +215,7 @@ if (bounds.length === 1) {
 
 }
 
-/*
+
 
     // ===============================
 // Timeline
@@ -238,7 +239,7 @@ if (markerList.length > 1) {
 
 }
 
-*/
+
 
         // ===============================
     // Lag legend
@@ -372,3 +373,4 @@ map.on("overlayadd overlayremove", function () {
 // ===============================
 
 console.log("NY SCRIPT 2026");
+
