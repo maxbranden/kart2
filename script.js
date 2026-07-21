@@ -291,6 +291,36 @@ function updateTimeline(year) {
 
 
 // ===============================
+// Oppdater markører etter år
+// ===============================
+
+function updateTimeline(year) {
+
+    markerList.forEach(item => {
+
+        if (item.year <= year) {
+
+            if (!item.layer.hasLayer(item.marker)) {
+                item.layer.addLayer(item.marker);
+            }
+
+        } else {
+
+            if (item.layer.hasLayer(item.marker)) {
+                item.layer.removeLayer(item.marker);
+            }
+
+        }
+
+    });
+
+    document.getElementById("timelineYear").textContent =
+        "År: " + year;
+
+}
+
+
+// ===============================
 // Legend med filtrering
 // ===============================
 
