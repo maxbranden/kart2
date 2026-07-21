@@ -7,10 +7,16 @@
 
 const map = L.map("map").setView([60.39, 8.46], 5);
 
+console.log("Kart opprettet");
+
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors",
     maxZoom: 19
 }).addTo(map);
+
+console.log("Kartlag lagt til");
+
+
 
 
 // ===============================
@@ -102,6 +108,8 @@ function createIcon(color) {
 fetch(apiUrl)
 .then(response => response.json())
 .then(data => {
+
+    console.log("Data hentet");
 
     console.log(data);
 
