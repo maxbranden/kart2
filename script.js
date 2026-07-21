@@ -174,19 +174,23 @@ fetch(apiUrl)
 
     });
 
-    // ===============================
-    // Zoom kartet
-    // ===============================
+// ===============================
+// Zoom kartet
+// ===============================
 
-    if (bounds.length > 0) {
+if (bounds.length === 1) {
 
-        map.fitBounds(bounds, {
+    // Kun én lokasjon – bruk zoomnivå 5
+    map.setView(bounds[0], 5);
 
-            padding: [40, 40]
+} else if (bounds.length > 1) {
 
-        });
+    // Flere lokasjoner – tilpass utsnittet automatisk
+    map.fitBounds(bounds, {
+        padding: [40, 40]
+    });
 
-    }
+}
 
     // ===============================
     // Lag legend
