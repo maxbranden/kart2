@@ -385,6 +385,9 @@ function createLegend(){
 
         });
 
+        div.style.position = "relative";
+div.style.top = "60px";
+
         return div;
 
     };
