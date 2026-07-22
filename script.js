@@ -338,7 +338,7 @@ function createLegend(){
 
     const div = L.DomUtil.create("div","legend");
 
-    div.style.marginTop = "45px";
+    div.style.marginTop = "145px";
 
     legend.onAdd=function(){
 
