@@ -141,6 +141,64 @@ maxYear = Math.max(maxYear, year);
         }
 
         // ===============================
+// Zoom kartet
+// ===============================
+
+if (bounds.length === 1) {
+
+    // Kun én lokasjon – bruk zoomnivå 5
+    map.setView(bounds[0], 5);
+
+} else if (bounds.length > 1) {
+
+    // Flere lokasjoner – tilpass utsnittet automatisk
+    map.fitBounds(bounds, {
+        padding: [40, 40]
+    });
+
+}
+
+
+
+    // ===============================
+// Timeline
+// ===============================
+
+if (markerList.length > 1) {
+
+    const container = document.getElementById("timelineContainer");
+    const slider = document.getElementById("timelineSlider");
+
+    container.style.display = "flex";
+
+    slider.min = minYear;
+    slider.max = maxYear;
+    slider.value = maxYear;
+
+    document.getElementById("timelineMin").textContent = minYear;
+    document.getElementById("timelineMax").textContent = maxYear;
+
+    updateTimeline(maxYear);
+
+    slider.addEventListener("input", function () {
+
+        updateTimeline(parseInt(this.value));
+
+    });
+
+}
+
+
+
+        // ===============================
+    // Lag legend
+    // ===============================
+
+    
+
+    createLegend();
+
+        // ===============================
         // Tema
         // ===============================
 
@@ -198,90 +256,9 @@ markerList.push({
 
 });
 
-// ===============================
-// Zoom kartet
-// ===============================
-
-if (bounds.length === 1) {
-
-    // Kun én lokasjon – bruk zoomnivå 5
-    map.setView(bounds[0], 5);
-
-} else if (bounds.length > 1) {
-
-    // Flere lokasjoner – tilpass utsnittet automatisk
-    map.fitBounds(bounds, {
-        padding: [40, 40]
-    });
-
-}
+        bounds.push([lat, lng]);
 
 
-
-    // ===============================
-// Timeline
-// ===============================
-
-if (markerList.length > 1) {
-
-    const container = document.getElementById("timelineContainer");
-    const slider = document.getElementById("timelineSlider");
-
-    container.style.display = "flex";
-
-    slider.min = minYear;
-    slider.max = maxYear;
-    slider.value = maxYear;
-
-    document.getElementById("timelineMin").textContent = minYear;
-    document.getElementById("timelineMax").textContent = maxYear;
-
-    updateTimeline(maxYear);
-
-    slider.addEventListener("input", function () {
-
-        updateTimeline(parseInt(this.value));
-
-    });
-
-}
-
-
-
-        // ===============================
-    // Lag legend
-    // ===============================
-
-    // ===============================
-// Oppdater markører etter år
-// ===============================
-
-function updateTimeline(year) {
-
-    markerList.forEach(item => {
-
-        if (item.year <= year) {
-
-            if (!item.layer.hasLayer(item.marker)) {
-                item.layer.addLayer(item.marker);
-            }
-
-        } else {
-
-            if (item.layer.hasLayer(item.marker)) {
-                item.layer.removeLayer(item.marker);
-            }
-
-        }
-
-    });
-
-    document.getElementById("timelineYear").textContent =
-        year;
-
-}
-
-    createLegend();
 
 })
 .catch(error => {
@@ -355,34 +332,7 @@ function updateTimelineRange() {
 }
 
 
-// ===============================
-// Oppdater markører etter år
-// ===============================
 
-function updateTimeline(year) {
-
-    markerList.forEach(item => {
-
-        if (item.year <= year) {
-
-            if (!item.layer.hasLayer(item.marker)) {
-                item.layer.addLayer(item.marker);
-            }
-
-        } else {
-
-            if (item.layer.hasLayer(item.marker)) {
-                item.layer.removeLayer(item.marker);
-            }
-
-        }
-
-    });
-
-    document.getElementById("timelineYear").textContent =
-        "År: " + year;
-
-}
 
 
 // ===============================
