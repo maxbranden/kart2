@@ -2,6 +2,8 @@
 // Kart
 // ===============================
 
+
+
 const map = L.map("map").setView([60.39, 8.46], 5);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -29,6 +31,7 @@ const visibleThemes = new Set();
 
 let minYear = Infinity;
 let maxYear = -Infinity;
+let popupTimer = null;
 
 
 // ===============================
@@ -242,13 +245,19 @@ if(item.year<=year){
 
 if (document.getElementById("autoPopup").checked) {
 
-    item.marker.openPopup();
+    clearTimeout(popupTimer);
 
-    setTimeout(() => {
+    popupTimer = setTimeout(() => {
 
-        item.marker.closePopup();
+        item.marker.openPopup();
 
-    }, 2000);
+        setTimeout(() => {
+
+            item.marker.closePopup();
+
+        }, 2000);
+
+    }, 300);
 
 }
 
