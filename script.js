@@ -290,6 +290,36 @@ function updateTimeline(year) {
 
 });
 
+    function updateTimeline(year) {
+
+    markerList.forEach(item => {
+
+        // Hopp over skjulte temaer
+        if (!visibleThemes.has(item.theme)) {
+            item.layer.removeLayer(item.marker);
+            return;
+        }
+
+        if (item.year <= year) {
+
+            if (!item.layer.hasLayer(item.marker)) {
+                item.layer.addLayer(item.marker);
+            }
+
+        } else {
+
+            if (item.layer.hasLayer(item.marker)) {
+                item.layer.removeLayer(item.marker);
+            }
+
+        }
+
+    });
+
+    document.getElementById("timelineYear").textContent = year;
+
+}
+
 function updateTimelineRange() {
 
     const years = markerList
