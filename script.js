@@ -239,13 +239,22 @@ if(item.year<=year){
 
         item.layer.addLayer(item.marker);
 
-        item.marker.openPopup();
 
-        setTimeout(() => {
+if (document.getElementById("autoPopup").checked) {
 
-            item.marker.closePopup();
+    item.marker.openPopup();
 
-        }, 2000);
+    setTimeout(() => {
+
+        item.marker.closePopup();
+
+    }, 2000);
+
+}
+
+
+
+        
 
     }
 
