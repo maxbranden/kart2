@@ -243,18 +243,19 @@ if(item.year<=year){
         item.layer.addLayer(item.marker);
 
 
-if (document.getElementById("autoPopup").checked) {
+        if (document.getElementById("autoPopup").checked) {
 
     clearTimeout(popupTimer);
 
     popupTimer = setTimeout(() => {
 
+        if (!document.getElementById("autoPopup").checked)
+            return;
+
         item.marker.openPopup();
 
         setTimeout(() => {
-
             item.marker.closePopup();
-
         }, 2000);
 
     }, 300);
@@ -427,6 +428,20 @@ document.getElementById("showLabels").addEventListener("change",function(){
         }
 
     });
+
+});
+
+document.getElementById("autoPopup").addEventListener("change", function () {
+
+    if (!this.checked) {
+
+        clearTimeout(popupTimer);
+
+        markerList.forEach(item => {
+            item.marker.closePopup();
+        });
+
+    }
 
 });
 
