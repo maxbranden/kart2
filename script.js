@@ -36,6 +36,8 @@ const markerList = [];
 const themeLayers = {};
 const themeColors = {};
 
+const visibleThemes = new Set();
+
 let minYear = Infinity;
 let maxYear = -Infinity;
 
