@@ -336,7 +336,7 @@ function createLegend(){
 
     legend.onAdd=function(){
 
-        const div=L.DomUtil.create("div","legend");
+        const div = L.DomUtil.create("div","legend themeLegend");
 
         div.innerHTML="<h4>Tema</h4>";
 
