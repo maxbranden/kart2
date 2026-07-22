@@ -153,6 +153,8 @@ maxYear = Math.max(maxYear, year);
 
             themeLayers[theme] = L.layerGroup().addTo(map);
 
+            visibleThemes.add(theme);
+
             colorIndex++;
 
         }
@@ -188,16 +190,13 @@ markerList.push({
 
     marker: marker,
     year: year,
+    theme: theme,
 
     label: `<b>${row.Navn}</b><br>${row.Beskrivelse || ""}`,
 
     layer: themeLayers[theme]
 
 });
-
-        bounds.push([lat, lng]);
-
-    });
 
 // ===============================
 // Zoom kartet
@@ -291,6 +290,40 @@ function updateTimeline(year) {
 
 });
 
+function updateTimelineRange() {
+
+    const years = markerList
+        .filter(item => visibleThemes.has(item.theme))
+        .map(item => item.year);
+
+    const container = document.getElementById("timelineContainer");
+    const slider = document.getElementById("timelineSlider");
+
+    if (years.length <= 1) {
+
+        container.style.display = "none";
+        return;
+
+    }
+
+    container.style.display = "flex";
+
+    const min = Math.min(...years);
+    const max = Math.max(...years);
+
+    slider.min = min;
+    slider.max = max;
+
+    document.getElementById("timelineMin").textContent = min;
+    document.getElementById("timelineMax").textContent = max;
+
+    if (slider.value < min) slider.value = min;
+    if (slider.value > max) slider.value = max;
+
+    updateTimeline(parseInt(slider.value));
+
+}
+
 
 // ===============================
 // Oppdater markører etter år
@@ -363,11 +396,17 @@ item.appendChild(text);
 
                     map.removeLayer(themeLayers[theme]);
 
+                    visibleThemes.delete(theme);
+updateTimelineRange();
+
                     item.style.opacity = 0.35;
 
                 } else {
 
                     map.addLayer(themeLayers[theme]);
+
+                    visibleThemes.add(theme);
+updateTimelineRange();
 
                     item.style.opacity = 1;
 
