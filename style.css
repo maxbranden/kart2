@@ -133,3 +133,7 @@ body {
     margin-right: 8px;
     border: 1px solid #555;
 }
+
+.leaflet-top .leaflet-control {
+    margin-top: 70px;
+}
