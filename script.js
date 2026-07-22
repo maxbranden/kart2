@@ -231,12 +231,27 @@ function updateTimeline(year){
 
         }
 
-        if(item.year<=year){
+if(item.year<=year){
 
-            if(!item.layer.hasLayer(item.marker))
-                item.layer.addLayer(item.marker);
+    const wasVisible = item.layer.hasLayer(item.marker);
 
-        }
+    if(!wasVisible){
+
+        item.layer.addLayer(item.marker);
+
+        item.marker.openPopup();
+
+        setTimeout(() => {
+
+            item.marker.closePopup();
+
+        }, 2000);
+
+    }
+
+}
+
+            
         else{
 
             if(item.layer.hasLayer(item.marker))
