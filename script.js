@@ -144,11 +144,14 @@ fetch(apiUrl)
         marker.addTo(themeLayers[theme]);
 
         marker.bindPopup(`
-            <b>${row.Navn}</b><br>
-            ${row.Beskrivelse||""}
-            <br><br>
-            <small><b>Tema:</b> ${theme}</small>
-        `);
+    <b>${row.Navn}</b><br>
+    ${row.Beskrivelse||""}
+    <br><br>
+    <small><b>Tema:</b> ${theme}</small>
+`, {
+    autoClose: false,
+    closeOnClick: false
+});
 
         markerList.push({
 
