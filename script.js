@@ -334,10 +334,6 @@ function createLegend(){
 
     const legend = L.control({position:"topleft"});
 
-    legend.onAdd = function(){
-
-        const div = L.DomUtil.create("div","legend");
-
     legend.onAdd=function(){
 
         const div=L.DomUtil.create("div","legend");
