@@ -202,7 +202,7 @@ markerList.push({
 
         bounds.push([lat, lng]);
 
-        
+      });  
 
 
                 // ===============================
