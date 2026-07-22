@@ -1,32 +1,22 @@
-
-// Del 1 av script.js kommer i neste melding fordi den er for stor til én chatmelding.
-// Bruk denne index.html og style.css først.
-
 // ===============================
 // Kart
 // ===============================
 
 const map = L.map("map").setView([60.39, 8.46], 5);
 
-console.log("Kart opprettet");
-
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors",
     maxZoom: 19
 }).addTo(map);
-
-console.log("Kartlag lagt til");
-
-
 
 
 // ===============================
 // Google Sheet
 // ===============================
 
-
 const apiUrl =
 "https://script.google.com/macros/s/AKfycbyWdDE8bhaUhNqKjaHfwWbBIYcVBJF6fxxDTsaFyMY-c9UBe0YFC4Q_EuyusIc6YiMrfw/exec";
+
 
 // ===============================
 // Datastrukturer
@@ -35,7 +25,6 @@ const apiUrl =
 const markerList = [];
 const themeLayers = {};
 const themeColors = {};
-
 const visibleThemes = new Set();
 
 let minYear = Infinity;
@@ -43,7 +32,7 @@ let maxYear = -Infinity;
 
 
 // ===============================
-// Opptil 11 temafarger
+// Temafarger
 // ===============================
 
 const colors = [
@@ -67,19 +56,16 @@ let colorIndex = 0;
 // SVG-ikon
 // ===============================
 
-function createIcon(color) {
+function createIcon(color){
 
     return L.divIcon({
 
-        className: "",
+        className:"",
+        iconSize:[26,42],
+        iconAnchor:[13,42],
+        popupAnchor:[0,-36],
 
-        iconSize: [26, 42],
-
-        iconAnchor: [13, 42],
-
-        popupAnchor: [0, -36],
-
-        html: `
+        html:`
         <svg width="26" height="42" viewBox="0 0 26 42">
 
             <path
@@ -100,60 +86,46 @@ function createIcon(color) {
 
         </svg>
         `
+
     });
 
 }
+
 
 // ===============================
 // Les Google Sheet
 // ===============================
 
 fetch(apiUrl)
-.then(response => response.json())
-.then(data => {
 
-    console.log("Data hentet");
+.then(r=>r.json())
 
-    console.log(data);
+.then(data=>{
 
-    const bounds = [];
+    const bounds=[];
 
-    data.forEach(row => {
+    data.forEach(row=>{
 
-        // Hopper over tomme rader
+        const lat=parseFloat(row.Latitude);
+        const lng=parseFloat(row.Longitude);
+        const year=parseInt(row.Dato);
 
-        const lat = parseFloat(row.Latitude);
-        const lng = parseFloat(row.Longitude);
-
-        const year = parseInt(row.Dato);
-
-if (isNaN(year)) {
-    console.log("Mangler gyldig år:", row);
-    return;
-}
-
-minYear = Math.min(minYear, year);
-maxYear = Math.max(maxYear, year);
-
-        if (isNaN(lat) || isNaN(lng)) {
-            console.log("Hopper over rad:", row);
+        if(isNaN(lat) || isNaN(lng))
             return;
-        }
 
+        if(isNaN(year))
+            return;
 
+        minYear=Math.min(minYear,year);
+        maxYear=Math.max(maxYear,year);
 
-        // ===============================
-        // Tema
-        // ===============================
+        const theme=row.Tema ? row.Tema.trim() : "Annet";
 
-        const theme = row.Tema ? row.Tema.trim() : "Annet";
+        if(!themeColors[theme]){
 
-        if (!themeColors[theme]) {
+            themeColors[theme]=colors[colorIndex%colors.length];
 
-            themeColors[theme] =
-                colors[colorIndex % colors.length];
-
-            themeLayers[theme] = L.layerGroup().addTo(map);
+            themeLayers[theme]=L.layerGroup().addTo(map);
 
             visibleThemes.add(theme);
 
@@ -161,91 +133,81 @@ maxYear = Math.max(maxYear, year);
 
         }
 
-        const color = themeColors[theme];
-
-        // ===============================
-        // Marker
-        // ===============================
-
-        const marker = L.marker([lat, lng], {
-            icon: createIcon(color)
-        });
+        const marker=L.marker(
+            [lat,lng],
+            {icon:createIcon(themeColors[theme])}
+        );
 
         marker.addTo(themeLayers[theme]);
 
-        // ===============================
-        // Popup
-        // ===============================
-
         marker.bindPopup(`
             <b>${row.Navn}</b><br>
-            ${row.Beskrivelse || ""}
+            ${row.Beskrivelse||""}
             <br><br>
             <small><b>Tema:</b> ${theme}</small>
         `);
 
-        // ===============================
-        // Tooltip
-        // ===============================
+        markerList.push({
 
-markerList.push({
+            marker:marker,
+            year:year,
+            theme:theme,
+            layer:themeLayers[theme],
+            label:`<b>${row.Navn}</b><br>${row.Beskrivelse||""}`
 
-    marker: marker,
-    year: year,
-    theme: theme,
+        });
 
-    label: `<b>${row.Navn}</b><br>${row.Beskrivelse || ""}`,
+        bounds.push([lat,lng]);
 
-    layer: themeLayers[theme]
-
-});
-
-        bounds.push([lat, lng]);
-
-      });  
-
-
-                // ===============================
-// Zoom kartet
-// ===============================
-
-if (bounds.length === 1) {
-
-    // Kun én lokasjon – bruk zoomnivå 5
-    map.setView(bounds[0], 5);
-
-} else if (bounds.length > 1) {
-
-    // Flere lokasjoner – tilpass utsnittet automatisk
-    map.fitBounds(bounds, {
-        padding: [40, 40]
     });
 
-}
+    if(bounds.length===1){
 
+        map.setView(bounds[0],5);
 
+    }
 
-    // ===============================
+    else if(bounds.length>1){
+
+        map.fitBounds(bounds,{
+            padding:[40,40]
+        });
+
+    }
+
+    setupTimeline();
+
+    createLegend();
+
+})
+
+.catch(err=>console.error(err));
+
+// ===============================
 // Timeline
 // ===============================
 
-if (markerList.length > 1) {
+function setupTimeline(){
 
-    const container = document.getElementById("timelineContainer");
-    const slider = document.getElementById("timelineSlider");
+    if(markerList.length<=1)
+        return;
 
-    container.style.display = "flex";
+    const container=document.getElementById("timelineContainer");
+    const slider=document.getElementById("timelineSlider");
 
-    slider.min = minYear;
-    slider.max = maxYear;
-    slider.value = maxYear;
+    container.style.display="flex";
 
-    document.getElementById("timelineMin").textContent = minYear;
-    document.getElementById("timelineMax").textContent = maxYear;
+    slider.min=minYear;
+    slider.max=maxYear;
+    slider.value=maxYear;
+
+    document.getElementById("timelineMin").textContent=minYear;
+    document.getElementById("timelineMax").textContent=maxYear;
+    document.getElementById("timelineYear").textContent=maxYear;
 
     updateTimeline(maxYear);
 
-    slider.addEventListener("input", function () {
+    slider.addEventListener("input",function(){
 
         updateTimeline(parseInt(this.value));
 
@@ -254,149 +216,134 @@ if (markerList.length > 1) {
 }
 
 
+// ===============================
+// Vis markører etter år
+// ===============================
 
-        // ===============================
-    // Lag legend
-    // ===============================
+function updateTimeline(year){
 
-    
+    markerList.forEach(item=>{
 
-    createLegend();
+        if(!visibleThemes.has(item.theme)){
 
-
-})
-.catch(error => {
-
-    console.error("Kunne ikke hente data:", error);
-
-});
-
-    function updateTimeline(year) {
-
-    markerList.forEach(item => {
-
-        // Hopp over skjulte temaer
-        if (!visibleThemes.has(item.theme)) {
             item.layer.removeLayer(item.marker);
             return;
+
         }
 
-        if (item.year <= year) {
+        if(item.year<=year){
 
-            if (!item.layer.hasLayer(item.marker)) {
+            if(!item.layer.hasLayer(item.marker))
                 item.layer.addLayer(item.marker);
-            }
 
-        } else {
+        }
+        else{
 
-            if (item.layer.hasLayer(item.marker)) {
+            if(item.layer.hasLayer(item.marker))
                 item.layer.removeLayer(item.marker);
-            }
 
         }
 
     });
 
-    document.getElementById("timelineYear").textContent = year;
+    document.getElementById("timelineYear").textContent=year;
 
 }
 
-function updateTimelineRange() {
 
-    const years = markerList
-        .filter(item => visibleThemes.has(item.theme))
-        .map(item => item.year);
+// ===============================
+// Oppdater slider etter temafilter
+// ===============================
 
-    const container = document.getElementById("timelineContainer");
-    const slider = document.getElementById("timelineSlider");
+function updateTimelineRange(){
 
-    if (years.length <= 1) {
+    const slider=document.getElementById("timelineSlider");
+    const container=document.getElementById("timelineContainer");
 
-        container.style.display = "none";
+    const years=markerList
+        .filter(item=>visibleThemes.has(item.theme))
+        .map(item=>item.year);
+
+    if(years.length<=1){
+
+        container.style.display="none";
         return;
 
     }
 
-    container.style.display = "flex";
+    container.style.display="flex";
 
-    const min = Math.min(...years);
-    const max = Math.max(...years);
+    const min=Math.min(...years);
+    const max=Math.max(...years);
 
-    slider.min = min;
-    slider.max = max;
+    slider.min=min;
+    slider.max=max;
 
-    document.getElementById("timelineMin").textContent = min;
-    document.getElementById("timelineMax").textContent = max;
+    document.getElementById("timelineMin").textContent=min;
+    document.getElementById("timelineMax").textContent=max;
 
-    if (slider.value < min) slider.value = min;
-    if (slider.value > max) slider.value = max;
+    if(parseInt(slider.value)<min)
+        slider.value=min;
+
+    if(parseInt(slider.value)>max)
+        slider.value=max;
 
     updateTimeline(parseInt(slider.value));
 
 }
 
-
-
-
-
 // ===============================
 // Legend med filtrering
 // ===============================
 
-function createLegend() {
+function createLegend(){
 
-    const legend = L.control({ position: "topleft" });
+    const legend=L.control({position:"topleft"});
 
-    legend.onAdd = function () {
+    legend.onAdd=function(){
 
-        const div = L.DomUtil.create("div", "legend");
+        const div=L.DomUtil.create("div","legend");
 
-        div.innerHTML = "<h4>Tema</h4>";
+        div.innerHTML="<h4>Tema</h4>";
 
-        Object.keys(themeColors).forEach(theme => {
+        Object.keys(themeColors).forEach(theme=>{
 
-            const color = themeColors[theme];
+            const item=document.createElement("div");
+            item.className="legend-item";
+            item.style.cursor="pointer";
 
-            const item = document.createElement("div");
-            item.className = "legend-item";
+            const dot=document.createElement("span");
+            dot.className="legend-color";
+            dot.style.background=themeColors[theme];
 
-const colorDot = document.createElement("span");
-colorDot.className = "legend-color";
-colorDot.style.background = color;
+            const text=document.createElement("span");
+            text.textContent=theme;
 
-const text = document.createElement("span");
-text.textContent = theme;
+            item.appendChild(dot);
+            item.appendChild(text);
 
-item.appendChild(colorDot);
-item.appendChild(text);
+            let visible=true;
 
-            item.style.cursor = "pointer";
+            item.onclick=function(){
 
-            let visible = true;
-
-            item.onclick = function () {
-
-                if (visible) {
+                if(visible){
 
                     map.removeLayer(themeLayers[theme]);
-
                     visibleThemes.delete(theme);
-updateTimelineRange();
+                    item.style.opacity=0.35;
 
-                    item.style.opacity = 0.35;
-
-                } else {
+                }
+                else{
 
                     map.addLayer(themeLayers[theme]);
-
                     visibleThemes.add(theme);
-updateTimelineRange();
-
-                    item.style.opacity = 1;
+                    item.style.opacity=1;
 
                 }
 
-                visible = !visible;
+                visible=!visible;
+
+                updateTimelineRange();
 
             };
 
@@ -412,29 +359,34 @@ updateTimelineRange();
 
 }
 
+
 // ===============================
-// Vis / skjul etiketter
+// Vis / skjul beskrivelser
 // ===============================
 
-document.getElementById("showLabels").addEventListener("change", function () {
+document.getElementById("showLabels").addEventListener("change",function(){
 
-    markerList.forEach(item => {
+    markerList.forEach(item=>{
 
-        if (this.checked) {
+        if(this.checked){
 
             item.marker.bindTooltip(
+
                 item.label,
+
                 {
-                    permanent: true,
-                    direction: "top",
-                    offset: [0, -30],
-                    opacity: 0.9
+                    permanent:true,
+                    direction:"top",
+                    offset:[0,-30],
+                    opacity:0.9
                 }
+
             );
 
             item.marker.openTooltip();
 
-        } else {
+        }
+        else{
 
             item.marker.closeTooltip();
             item.marker.unbindTooltip();
@@ -445,13 +397,12 @@ document.getElementById("showLabels").addEventListener("change", function () {
 
 });
 
-
 // ===============================
-// Hindrer at kartet zoomer når man
-// klikker i legend
+// Hindrer at kartet zoomer når
+// man klikker i legend
 // ===============================
 
-map.on("overlayadd overlayremove", function () {
+map.on("overlayadd overlayremove",function(){
 
     map.invalidateSize();
 
@@ -459,8 +410,26 @@ map.on("overlayadd overlayremove", function () {
 
 
 // ===============================
-// Ferdig!
+// Hjelpefunksjon for oppfriskning
 // ===============================
 
-console.log("NY SCRIPT 2026");
+function refreshMap(){
 
+    const slider=document.getElementById("timelineSlider");
+
+    if(slider){
+
+        updateTimeline(parseInt(slider.value));
+
+    }
+
+}
+
+
+// ===============================
+// Klar
+// ===============================
+
+console.log("Kart lastet.");
+console.log("Antall markører:",markerList.length);
+console.log("Script ferdig.");
