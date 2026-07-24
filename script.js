@@ -488,3 +488,35 @@ console.log("Antall markører:",markerList.length);
 console.log("Script ferdig.");
 
 console.log("VERSJON 23 JULI");
+
+// ===============================
+// Søkefelt
+// ===============================
+
+document.getElementById("searchButton").addEventListener("click", sendSearch);
+
+document.getElementById("searchText").addEventListener("keydown", function(e){
+
+    if(e.key==="Enter"){
+        sendSearch();
+    }
+
+});
+
+function sendSearch(){
+
+    const text=document.getElementById("searchText").value.trim();
+
+    fetch(apiUrl,{
+        method:"POST",
+        body:JSON.stringify({
+            action:"search",
+            text:text
+        })
+    })
+    .then(r=>r.json())
+    .then(result=>{
+        console.log(result);
+    });
+
+}
