@@ -507,6 +507,8 @@ function sendSearch(){
 
     const text=document.getElementById("searchText").value.trim();
 
+    console.log("Sender:", text);
+
     fetch(apiUrl,{
         method:"POST",
         body:JSON.stringify({
