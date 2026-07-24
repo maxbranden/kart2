@@ -509,16 +509,8 @@ function sendSearch(){
 
     console.log("Sender:", text);
 
-    fetch(apiUrl,{
-        method:"POST",
-        body:JSON.stringify({
-            action:"search",
-            text:text
-        })
-    })
-    .then(r=>r.json())
-    .then(result=>{
-        console.log(result);
-    });
-
-}
+    fetch(apiUrl + "?action=search&q=" + encodeURIComponent(text))
+.then(r => r.json())
+.then(result => {
+    console.log(result);
+});
