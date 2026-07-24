@@ -119,4 +119,28 @@ body {
     border: 1px solid #555;
 }
 
+/* ===============================
+   Søkefelt
+=============================== */
+
+#searchBox{
+    position:absolute;
+    top:70px;
+    right:10px;
+    z-index:1000;
+
+    background:white;
+    padding:8px;
+    border-radius:6px;
+    box-shadow:0 1px 5px rgba(0,0,0,.3);
+}
+
+#searchText{
+    width:180px;
+}
+
+#searchButton{
+    margin-left:4px;
+}
+
 
