@@ -511,15 +511,17 @@ function sendSearch(){
 
  fetch(apiUrl,{
         method:"POST",
+         headers: {
+        "Content-Type": "application/json"
+    },
         body:JSON.stringify({
             action:"search",
             text:text
         })
     })
-    .then(r=>r.json())
-    .then(result=>{
-        console.log(result);
-    });
+   .then(r => r.json())
+.then(result => console.log(result))
+.catch(err => console.error(err));
 
 }
 
