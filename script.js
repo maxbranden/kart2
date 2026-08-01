@@ -203,11 +203,11 @@ function setupTimeline(){
 
     container.style.display="flex";
 
-    slider.min=minYear;
+    slider.min=minYear - 1;
     slider.max=maxYear;
     slider.value=maxYear;
 
-    document.getElementById("timelineMin").textContent=minYear;
+    document.getElementById("timelineMin").textContent=minYear - 1;
     document.getElementById("timelineMax").textContent=maxYear;
     document.getElementById("timelineYear").textContent=maxYear;
 
