@@ -313,7 +313,7 @@ function updateTimelineRange(){
     const min=Math.min(...years);
     const max=Math.max(...years);
 
-    slider.min=min;
+    slider.min=min - 1;
     slider.max=max;
 
     document.getElementById("timelineMin").textContent=min - 1;
