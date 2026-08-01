@@ -316,7 +316,7 @@ function updateTimelineRange(){
     slider.min=min;
     slider.max=max;
 
-    document.getElementById("timelineMin").textContent=min;
+    document.getElementById("timelineMin").textContent=min - 1;
     document.getElementById("timelineMax").textContent=max;
 
     if(parseInt(slider.value)<min)
