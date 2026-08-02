@@ -205,12 +205,12 @@ function setupTimeline(){
     container.style.display="flex";
 
     slider.min=minYear - 1;
-    slider.max=maxYear;
-    slider.value=maxYear;
+    slider.max=maxYear + 1;
+    slider.value=maxYear +1;
 
     document.getElementById("timelineMin").textContent=minYear - 1;
-    document.getElementById("timelineMax").textContent=maxYear;
-    document.getElementById("timelineYear").textContent=maxYear;
+    document.getElementById("timelineMax").textContent=maxYear + 1;
+    document.getElementById("timelineYear").textContent=maxYear + 1;
 
     updateTimeline(maxYear);
 
@@ -319,16 +319,16 @@ function updateTimelineRange(){
     const max=Math.max(...years);
 
     slider.min=min - 1;
-    slider.max=max;
+    slider.max=max + 1;
 
     document.getElementById("timelineMin").textContent=min - 1;
-    document.getElementById("timelineMax").textContent=max;
+    document.getElementById("timelineMax").textContent=max + 1;
 
     if(parseInt(slider.value)<min)
         slider.value=min;
 
-    if(parseInt(slider.value)>max)
-        slider.value=max;
+    if(parseInt(slider.value)>max + 1)
+        slider.value=max + 1;
 
     updateTimeline(parseInt(slider.value));
 
