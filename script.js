@@ -454,7 +454,7 @@ document.getElementById("autoPopup").addEventListener("change", function () {
     }
 
 });
-
+/*
 document.getElementById("invertTimeline").addEventListener("change", function () {
 
     inverted = this.checked;
@@ -462,12 +462,20 @@ document.getElementById("invertTimeline").addEventListener("change", function ()
 
 });
 
+*/
 document.getElementById("invertTimeline").addEventListener("change", function () {
 
     inverted = this.checked;
-    console.log("Inverted:", inverted);
 
-    refreshMap();
+    const slider = document.getElementById("timelineSlider");
+
+    if (inverted) {
+        slider.value = slider.min;
+    } else {
+        slider.value = slider.max;
+    }
+
+    updateTimeline(parseInt(slider.value));
 
 });
 
