@@ -473,8 +473,10 @@ document.getElementById("invertTimeline").addEventListener("change", function ()
 
     if (inverted) {
         slider.value = slider.min;
+        slider.dispatchEvent(new Event("input"));
     } else {
         slider.value = slider.max;
+        slider.dispatchEvent(new Event("input"));
     }
 
     console.log("Etter:", slider.value);
