@@ -32,6 +32,7 @@ const visibleThemes = new Set();
 let minYear = Infinity;
 let maxYear = -Infinity;
 let popupTimer = null;
+let inverted = false;
 
 
 // ===============================
@@ -237,7 +238,11 @@ function updateTimeline(year){
 
         }
 
-if(item.year<=year){
+const show = inverted
+    ? item.year >= year
+    : item.year <= year;
+
+if(show){
 
     const wasVisible = item.layer.hasLayer(item.marker);
 
@@ -447,6 +452,13 @@ document.getElementById("autoPopup").addEventListener("change", function () {
         });
 
     }
+
+});
+
+document.getElementById("invertTimeline").addEventListener("change", function () {
+
+    inverted = this.checked;
+    refreshMap();
 
 });
 
