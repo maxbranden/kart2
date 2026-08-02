@@ -462,6 +462,15 @@ document.getElementById("invertTimeline").addEventListener("change", function ()
 
 });
 
+document.getElementById("invertTimeline").addEventListener("change", function () {
+
+    inverted = this.checked;
+    console.log("Inverted:", inverted);
+
+    refreshMap();
+
+});
+
 // ===============================
 // Hindrer at kartet zoomer når
 // man klikker i legend
