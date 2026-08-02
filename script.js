@@ -469,11 +469,15 @@ document.getElementById("invertTimeline").addEventListener("change", function ()
 
     const slider = document.getElementById("timelineSlider");
 
+    console.log("Før:", slider.value, slider.min, slider.max);
+
     if (inverted) {
         slider.value = slider.min;
     } else {
         slider.value = slider.max;
     }
+
+    console.log("Etter:", slider.value);
 
     updateTimeline(parseInt(slider.value));
 
