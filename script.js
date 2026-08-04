@@ -274,7 +274,7 @@ if (singlePoint) {
         }
 
 const show = singlePoint
-    ? item === current
+    ? item.year === currentYear
     : (inverted
         ? item.year >= year
         : item.year <= year);
