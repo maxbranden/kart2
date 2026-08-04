@@ -598,3 +598,43 @@ console.log("Antall markører:",markerList.length);
 console.log("Script ferdig.");
 
 console.log("VERSJON 23 JULI");
+
+// ===============================
+// Update Marker Counts
+// ===============================
+    
+
+    function updateMarkerCounts(){
+
+    const groups = {};
+
+    markerList.forEach(item => {
+
+        if(!item.layer.hasLayer(item.marker))
+            return;
+
+        const key = item.lat + "," + item.lng;
+
+        if(!groups[key])
+            groups[key] = [];
+
+        groups[key].push(item);
+
+    });
+
+    Object.values(groups).forEach(group => {
+
+        group.forEach(item => {
+
+            item.marker.setIcon(
+                createIcon(
+                    themeColors[item.theme],
+                    group.length
+                )
+            );
+
+        });
+
+    });
+
+}
