@@ -719,3 +719,55 @@ function spiderfyGroup(clickedItem){
     console.log("Spiderfy:", group.length);
 
 }
+
+function spiderfyGroup(clickedItem){
+
+    closeSpiderfy();
+
+    const group = markerList.filter(item =>
+
+        item.layer.hasLayer(item.marker) &&
+        item.lat === clickedItem.lat &&
+        item.lng === clickedItem.lng
+
+    );
+
+    if(group.length <= 1){
+
+        clickedItem.marker.openPopup();
+        return;
+
+    }
+
+    spiderOpen = true;
+
+    const center = L.latLng(clickedItem.lat, clickedItem.lng);
+
+    const radius = 0.00035;   // ca. 35 meter
+
+    group.forEach((item,index)=>{
+
+        const angle = (2*Math.PI/group.length)*index;
+
+        const lat = center.lat + radius*Math.cos(angle);
+        const lng = center.lng + radius*Math.sin(angle);
+
+        const clone = L.marker([lat,lng],{
+
+            icon:item.marker.getIcon()
+
+        });
+
+        if(item.marker.getPopup()){
+
+            clone.bindPopup(item.marker.getPopup().getContent());
+
+        }
+
+        clone.addTo(spiderLayer);
+
+        spiderOriginals.push(item);
+
+    });
+
+}
