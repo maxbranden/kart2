@@ -699,7 +699,7 @@ map.on("click", function(){
 
 function spiderfyGroup(clickedItem){
 
-      console.log("Spiderfy starter");
+       alert("SpiderfyGroup kjører!");
 
     closeSpiderfy();
 
