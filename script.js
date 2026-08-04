@@ -370,7 +370,7 @@ function updateTimelineRange(){
 
 function createLegend(){
 
-    const legend = L.control({position:"topleft"});
+    const legend = L.control({position:"bottomleft"});
 
     legend.onAdd=function(){
 
