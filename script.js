@@ -699,6 +699,8 @@ map.on("click", function(){
 
 function spiderfyGroup(clickedItem){
 
+      console.log("Spiderfy starter");
+
     closeSpiderfy();
 
     const group = markerList.filter(item =>
