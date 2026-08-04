@@ -635,16 +635,18 @@ console.log("VERSJON 23 JULI");
 
     Object.values(groups).forEach(group => {
 
-        group.forEach(item => {
+group.forEach(item => {
 
-            item.marker.setIcon(
-                createIcon(
-                    themeColors[item.theme],
-                    group.length
-                )
-            );
+    item.count = group.length;
 
-        });
+    item.marker.setIcon(
+        createIcon(
+            themeColors[item.theme],
+            group.length
+        )
+    );
+
+});
 
     });
 
