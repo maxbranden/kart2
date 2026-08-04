@@ -217,9 +217,17 @@ const markerInfo = {
 
 marker._timelineData = markerInfo;
 
+marker.on("click", function(e){
+
+    L.DomEvent.stopPropagation(e);
+
+    spiderfyGroup(this._timelineData);
+
+});
+
 markerList.push(markerInfo);
 
-        bounds.push([lat,lng]);
+bounds.push([lat,lng]);
 
     });
 
@@ -686,3 +694,26 @@ map.on("click", function(){
     closeSpiderfy();
 
 });
+
+function spiderfyGroup(clickedItem){
+
+    closeSpiderfy();
+
+    const group = markerList.filter(item =>
+
+        item.layer.hasLayer(item.marker) &&
+        item.lat === clickedItem.lat &&
+        item.lng === clickedItem.lng
+
+    );
+
+    if(group.length <= 1){
+
+        clickedItem.marker.openPopup();
+        return;
+
+    }
+
+    console.log("Spiderfy:", group.length);
+
+}
