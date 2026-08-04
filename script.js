@@ -360,6 +360,8 @@ const show = singlePoint
 
     document.getElementById("timelineYear").textContent = year;
 
+    updateMarkerCounts();
+
 }
 
 
