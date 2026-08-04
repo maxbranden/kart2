@@ -35,6 +35,14 @@ let popupTimer = null;
 let inverted = false;
 let singlePoint = false;
 
+// ===============================
+// Spiderfy
+// ===============================
+
+let spiderLayer = L.layerGroup().addTo(map);
+let spiderOpen = false;
+let spiderOriginals = [];
+
 
 // ===============================
 // Temafarger
@@ -652,3 +660,29 @@ group.forEach(item => {
 
 }
 
+function closeSpiderfy(){
+
+    if(!spiderOpen)
+        return;
+
+    spiderLayer.clearLayers();
+
+    spiderOriginals.forEach(item => {
+
+        if(!item.layer.hasLayer(item.marker)){
+            item.layer.addLayer(item.marker);
+        }
+
+    });
+
+    spiderOriginals = [];
+    spiderOpen = false;
+
+}
+
+// Legg denne rett etter funksjonen
+map.on("click", function(){
+
+    closeSpiderfy();
+
+});
