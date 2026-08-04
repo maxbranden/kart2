@@ -228,6 +228,8 @@ markerList.push({
 
     createLegend();
 
+    updateMarkerCounts();
+
 })
 
 .catch(err=>console.error(err));
