@@ -35,6 +35,7 @@ let popupTimer = null;
 let inverted = false;
 let singlePoint = false;
 
+
 // ===============================
 // Temafarger
 // ===============================
@@ -644,3 +645,4 @@ console.log("VERSJON 23 JULI");
     });
 
 }
+
