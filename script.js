@@ -275,16 +275,10 @@ function updateTimeline(year){
         }
 
 const show = singlePoint
-    ? (
-        inverted
-            ? (year <= item.year && year > item.year - 5)
-            : (year >= item.year && year < item.year + 5)
-      )
-    : (
-        inverted
-            ? item.year >= year
-            : item.year <= year
-      );
+    ? item === current
+    : (inverted
+        ? item.year >= year
+        : item.year <= year);
 
         if(show){
 
