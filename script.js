@@ -144,10 +144,26 @@ fetch(apiUrl)
 
         marker.addTo(themeLayers[theme]);
 
-        marker.bindPopup(`
+  const imageHtml = row.Bilde
+    ? `
+        <div style="margin:8px 0;">
+            <img src="${row.Bilde}"
+                 style="
+                    width:140px;
+                    max-height:120px;
+                    object-fit:cover;
+                    border-radius:6px;
+                    border:1px solid #ccc;
+                    display:block;
+                    margin:auto;
+                 ">
+        </div>`
+    : "";
+
+marker.bindPopup(`
     <b>${row.Navn}</b><br>
-    ${row.Beskrivelse||""}
-    <br><br>
+    ${row.Beskrivelse || ""}
+    ${imageHtml}
     <small><b>Tema:</b> ${theme}</small>
 `, {
     autoClose: false,
