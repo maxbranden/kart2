@@ -119,4 +119,7 @@ body {
     border: 1px solid #555;
 }
 
-
+/* Temaboks nederst til venstre */
+.leaflet-bottom .themeLegend {
+    margin-bottom: 20px;
+}
