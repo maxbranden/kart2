@@ -35,7 +35,6 @@ let popupTimer = null;
 let inverted = false;
 let singlePoint = false;
 
-
 // ===============================
 // Temafarger
 // ===============================
