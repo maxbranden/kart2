@@ -716,29 +716,6 @@ function spiderfyGroup(clickedItem){
 
     }
 
-    console.log("Spiderfy:", group.length);
-
-}
-
-function spiderfyGroup(clickedItem){
-
-    closeSpiderfy();
-
-    const group = markerList.filter(item =>
-
-        item.layer.hasLayer(item.marker) &&
-        item.lat === clickedItem.lat &&
-        item.lng === clickedItem.lng
-
-    );
-
-    if(group.length <= 1){
-
-        clickedItem.marker.openPopup();
-        return;
-
-    }
-
     spiderOpen = true;
 
     const center = L.latLng(clickedItem.lat, clickedItem.lng);
