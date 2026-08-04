@@ -60,7 +60,7 @@ let colorIndex = 0;
 // SVG-ikon
 // ===============================
 
-function createIcon(color){
+function createIcon(color, count = 1){
 
     return L.divIcon({
 
@@ -69,31 +69,52 @@ function createIcon(color){
         iconAnchor:[13,42],
         popupAnchor:[0,-36],
 
-        html:`
-        <svg width="26" height="42" viewBox="0 0 26 42">
+       html: `
+<div style="position:relative;width:26px;height:42px;">
 
-            <path
-                d="M13 0
-                   C6 0 0 6 0 13
-                   C0 23 13 42 13 42
-                   C13 42 26 23 26 13
-                   C26 6 20 0 13 0Z"
-                fill="${color}"
-                stroke="#333"
-                stroke-width="1.4"/>
+    <svg width="26" height="42" viewBox="0 0 26 42">
 
-            <circle
-                cx="13"
-                cy="13"
-                r="5"
-                fill="white"/>
+        <path
+            d="M13 0
+               C6 0 0 6 0 13
+               C0 23 13 42 13 42
+               C13 42 26 23 26 13
+               C26 6 20 0 13 0Z"
+            fill="${color}"
+            stroke="#333"
+            stroke-width="1.4"/>
 
-        </svg>
-        `
+        <circle
+            cx="13"
+            cy="13"
+            r="5"
+            fill="white"/>
 
-    });
+    </svg>
 
-}
+    ${count > 1 ? `
+    <div style="
+        position:absolute;
+        top:-2px;
+        right:-4px;
+        width:18px;
+        height:18px;
+        border-radius:50%;
+        background:#d00;
+        color:#fff;
+        font-size:11px;
+        font-weight:bold;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border:2px solid white;
+    ">
+        ${count}
+    </div>
+    ` : ""}
+
+</div>
+`
 
 
 // ===============================
