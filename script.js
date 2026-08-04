@@ -194,18 +194,22 @@ marker.bindPopup(`
     closeOnClick: false
 });
 
-markerList.push({
+const markerInfo = {
 
     marker: marker,
     year: year,
     theme: theme,
     layer: themeLayers[theme],
-    label: `<b>${row.Navn}</b><br>${row.Beskrivelse||""}`,
+    label:`<b>${row.Navn}</b><br>${row.Beskrivelse||""}`,
 
     lat: lat,
     lng: lng
 
-});
+};
+
+marker._timelineData = markerInfo;
+
+markerList.push(markerInfo);
 
         bounds.push([lat,lng]);
 
