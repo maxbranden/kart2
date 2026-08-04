@@ -755,6 +755,7 @@ clone.on("click", function(e){
 console.log(lat, lng);
 
 clone.addTo(spiderLayer);
+        map.panTo([lat, lng]);
 
         /* NYTEST /////////////////////////////// */
 
