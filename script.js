@@ -743,7 +743,12 @@ function spiderfyGroup(clickedItem){
 
         }
 
+           console.log(lat, lng);
+
         clone.addTo(spiderLayer);
+
+        console.log("Kopi lagt til");
+     
 
         spiderOriginals.push(item);
 
