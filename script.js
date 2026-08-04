@@ -33,6 +33,7 @@ let minYear = Infinity;
 let maxYear = -Infinity;
 let popupTimer = null;
 let inverted = false;
+let singlePoint = false;
 
 
 // ===============================
@@ -229,6 +230,41 @@ function setupTimeline(){
 
 function updateTimeline(year){
 
+    // Finn gjeldende markør dersom "singlePoint" er aktiv
+    let current = null;
+
+    if (singlePoint) {
+
+        markerList.forEach(item => {
+
+            if (!visibleThemes.has(item.theme))
+                return;
+
+            const valid = inverted
+                ? item.year >= year
+                : item.year <= year;
+
+            if (!valid)
+                return;
+
+            if (!current) {
+
+                current = item;
+
+            } else {
+
+                if (!inverted && item.year > current.year)
+                    current = item;
+
+                if (inverted && item.year < current.year)
+                    current = item;
+
+            }
+
+        });
+
+    }
+
     markerList.forEach(item=>{
 
         if(!visibleThemes.has(item.theme)){
@@ -238,47 +274,42 @@ function updateTimeline(year){
 
         }
 
-const show = inverted
-    ? item.year >= year
-    : item.year <= year;
+        const show = singlePoint
+            ? item === current
+            : (inverted
+                ? item.year >= year
+                : item.year <= year);
 
-if(show){
+        if(show){
 
-    const wasVisible = item.layer.hasLayer(item.marker);
+            const wasVisible = item.layer.hasLayer(item.marker);
 
-    if(!wasVisible){
+            if(!wasVisible){
 
-        item.layer.addLayer(item.marker);
+                item.layer.addLayer(item.marker);
 
+                if (document.getElementById("autoPopup").checked) {
 
-        if (document.getElementById("autoPopup").checked) {
+                    clearTimeout(popupTimer);
 
-    clearTimeout(popupTimer);
+                    popupTimer = setTimeout(() => {
 
-    popupTimer = setTimeout(() => {
+                        if (!document.getElementById("autoPopup").checked)
+                            return;
 
-        if (!document.getElementById("autoPopup").checked)
-            return;
+                        item.marker.openPopup();
 
-        item.marker.openPopup();
+                        setTimeout(() => {
+                            item.marker.closePopup();
+                        }, 2000);
 
-        setTimeout(() => {
-            item.marker.closePopup();
-        }, 2000);
+                    }, 300);
 
-    }, 300);
+                }
 
-}
+            }
 
-
-
-        
-
-    }
-
-}
-
-            
+        }
         else{
 
             if(item.layer.hasLayer(item.marker))
@@ -288,7 +319,7 @@ if(show){
 
     });
 
-    document.getElementById("timelineYear").textContent=year;
+    document.getElementById("timelineYear").textContent = year;
 
 }
 
@@ -483,6 +514,11 @@ document.getElementById("invertTimeline").addEventListener("change", function ()
 
     updateTimeline(parseInt(slider.value));
 
+});
+
+document.getElementById("singlePoint").addEventListener("change", function () {
+    singlePoint = this.checked;
+    refreshMap();
 });
 
 // ===============================
