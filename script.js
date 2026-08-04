@@ -115,7 +115,9 @@ function createIcon(color, count = 1){
 
 </div>
 `
+    });
 
+}
 
 // ===============================
 // Les Google Sheet
