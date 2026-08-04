@@ -731,11 +731,12 @@ function spiderfyGroup(clickedItem){
         const lat = center.lat + radius*Math.cos(angle);
         const lng = center.lng + radius*Math.sin(angle);
 
-        const clone = L.marker([lat,lng],{
+const clone = L.marker([lat,lng],{
 
-            icon:item.marker.getIcon()
+    icon: item.marker.getIcon(),
+    zIndexOffset: 10000
 
-        });
+});
 
         if(item.marker.getPopup()){
 
