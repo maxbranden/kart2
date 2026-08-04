@@ -219,6 +219,8 @@ marker._timelineData = markerInfo;
 
 marker.on("click", function(e){
 
+    console.log("Klikk registrert");
+
     L.DomEvent.stopPropagation(e);
 
     spiderfyGroup(this._timelineData);
