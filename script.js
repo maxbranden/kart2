@@ -191,15 +191,18 @@ marker.bindPopup(`
     closeOnClick: false
 });
 
-        markerList.push({
+markerList.push({
 
-            marker:marker,
-            year:year,
-            theme:theme,
-            layer:themeLayers[theme],
-            label:`<b>${row.Navn}</b><br>${row.Beskrivelse||""}`
+    marker: marker,
+    year: year,
+    theme: theme,
+    layer: themeLayers[theme],
+    label: `<b>${row.Navn}</b><br>${row.Beskrivelse||""}`,
 
-        });
+    lat: lat,
+    lng: lng
+
+});
 
         bounds.push([lat,lng]);
 
