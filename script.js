@@ -230,39 +230,39 @@ function setupTimeline(){
 function updateTimeline(year){
 
     // Finn gjeldende markør dersom "singlePoint" er aktiv
-    let current = null;
+    let currentYear = null;
 
-    if (singlePoint) {
+if (singlePoint) {
 
-        markerList.forEach(item => {
+    markerList.forEach(item => {
 
-            if (!visibleThemes.has(item.theme))
-                return;
+        if (!visibleThemes.has(item.theme))
+            return;
 
-            const valid = inverted
-                ? item.year >= year
-                : item.year <= year;
+        const valid = inverted
+            ? item.year >= year
+            : item.year <= year;
 
-            if (!valid)
-                return;
+        if (!valid)
+            return;
 
-            if (!current) {
+        if (currentYear === null) {
 
-                current = item;
+            currentYear = item.year;
 
-            } else {
+        } else {
 
-                if (!inverted && item.year > current.year)
-                    current = item;
+            if (!inverted && item.year > currentYear)
+                currentYear = item.year;
 
-                if (inverted && item.year < current.year)
-                    current = item;
+            if (inverted && item.year < currentYear)
+                currentYear = item.year;
 
-            }
+        }
 
-        });
+    });
 
-    }
+}
 
     markerList.forEach(item=>{
 
