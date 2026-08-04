@@ -755,6 +755,10 @@ console.log(lat, lng);
 
 clone.addTo(spiderLayer);
 
+        /* NYTEST /////////////////////////////// */
+
+        console.log(spiderLayer.getLayers().length);
+
 // skjul originalmarkøren
 item.layer.removeLayer(item.marker);
 
