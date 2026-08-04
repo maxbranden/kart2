@@ -739,18 +739,27 @@ function spiderfyGroup(clickedItem){
 
         if(item.marker.getPopup()){
 
-            clone.bindPopup(item.marker.getPopup().getContent());
+    clone.bindPopup(item.marker.getPopup().getContent());
 
-        }
+}
 
-           console.log(lat, lng);
+clone.on("click", function(e){
 
-        clone.addTo(spiderLayer);
+    L.DomEvent.stopPropagation(e);
 
-        console.log("Kopi lagt til");
-     
+    this.openPopup();
 
-        spiderOriginals.push(item);
+});
+
+console.log(lat, lng);
+
+clone.addTo(spiderLayer);
+
+// skjul originalmarkøren
+item.layer.removeLayer(item.marker);
+
+// husk den så vi kan legge den tilbake
+spiderOriginals.push(item);
 
     });
 
