@@ -626,7 +626,7 @@ console.log("Kart lastet.");
 console.log("Antall markører:",markerList.length);
 console.log("Script ferdig.");
 
-console.log("SCRIPTVERSJON 08.06.01 SPIDERY");
+console.log("SCRIPTVERSJON 08.06.01v1");
 
 // ===============================
 // Update Marker Counts
@@ -702,10 +702,8 @@ function spiderfyGroup(clickedItem){
        alert("SpiderfyGroup kjører!");
 
         // Ikke spiderfy i one-point mode
-    if(singlePoint){
-    item.marker.setIcon(
-        createIcon(themeColors[item.theme],1)
-    );
+    if (singlePoint) {
+    clickedItem.marker.openPopup();
     return;
 }
 
