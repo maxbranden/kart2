@@ -39,7 +39,7 @@ let singlePoint = false;
 // Spiderfy
 // ===============================
 
-let spiderLayer = L.layerGroup().addTo(map);
+let spiderLayer = L.featureGroup().addTo(map);
 let spiderOpen = false;
 let spiderOriginals = [];
 
