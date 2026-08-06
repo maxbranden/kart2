@@ -701,6 +701,12 @@ function spiderfyGroup(clickedItem){
 
        alert("SpiderfyGroup kjører!");
 
+        // Ikke spiderfy i one-point mode
+    if(singlePoint){
+        clickedItem.marker.openPopup();
+        return;
+    }
+
     closeSpiderfy();
 
     const group = markerList.filter(item =>
