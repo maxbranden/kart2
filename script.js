@@ -703,9 +703,11 @@ function spiderfyGroup(clickedItem){
 
         // Ikke spiderfy i one-point mode
     if(singlePoint){
-        clickedItem.marker.openPopup();
-        return;
-    }
+    item.marker.setIcon(
+        createIcon(themeColors[item.theme],1)
+    );
+    return;
+}
 
     closeSpiderfy();
 
