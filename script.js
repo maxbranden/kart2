@@ -699,7 +699,7 @@ map.on("click", function(){
 
 function spiderfyGroup(clickedItem){
 
-       alert("SpiderfyGroup kjører!");
+
 
         // Ikke spiderfy i one-point mode
     if (singlePoint) {
