@@ -626,7 +626,7 @@ console.log("Kart lastet.");
 console.log("Antall markører:",markerList.length);
 console.log("Script ferdig.");
 
-console.log("VERSJON 08.06. SPIDERY");
+console.log("SCRIPTVERSJON 08.06.01 SPIDERY");
 
 // ===============================
 // Update Marker Counts
